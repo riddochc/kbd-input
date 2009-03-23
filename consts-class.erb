@@ -1,0 +1,30 @@
+module UInput
+
+% types = ['EV', 'SYN', 'KEY', 'BTN', 'REL', 'ABS', 'SW', 'MSC', 'LED', 'REP', 'SND', 'ID', 'BUS', 'FF']
+% d = {}
+% types.each {|t| d[t] = {}}
+% f = File.open('/usr/include/linux/input.h')
+% f.each_line do |line|
+%   if line =~ /#define\s(EV|SYN|KEY|BTN|REL|ABS|SW|MSC|LED|REP|SND|ID|BUS|FF)_(\w+)\s*(\S+)/
+%     d[$1][$2] = $3
+%   end
+% end
+
+% d.each_pair do |type, consts|
+  module <%= type %>
+%   consts.sort.each do |val|
+%     next if val[0] =~ /(HANGUEL|MIN_INTERESTING)/
+%     if (val[0] =~ /^END/)
+    <%= type %>_<%= val[0] %> = <%= val[1] %>
+%     elsif val[0] =~ /^[A-Z]/
+    <%= val[0] %> = <%= val[1] %>
+%     else
+    <%= type %>_<%= val[0] %> = <%= val[1] %>
+%     end
+%   end
+  end
+  
+% end
+
+
+end

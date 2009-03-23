@@ -1,0 +1,60 @@
+<!DOCTYPE Project SYSTEM "http://www.slickedit.com/dtd/vse/10.0/vpj.dtd">
+<Project
+	Version="10.0"
+	VendorName="SlickEdit"
+	WorkingDir=".">
+	<Config
+		Name="Release"
+		OutputFile=""
+		CompilerConfigName="Latest Version">
+		<Menu>
+			<Target
+				Name="Debug"
+				MenuCaption="&amp;Debug"
+				SaveOption="SaveModified"
+				RunFromDir="%rw"
+				CaptureOutputWith="ProcessBuffer"
+				ClearProcessBuffer="1">
+				<Exec CmdLine="rdebug %f"/>
+			</Target>
+			<Target
+				Name="Execute"
+				MenuCaption="R&amp;un"
+				SaveOption="SaveModified"
+				RunFromDir="%rw"
+				CaptureOutputWith="ProcessBuffer"
+				ClearProcessBuffer="1">
+				<Exec CmdLine="ruby %f"/>
+			</Target>
+			<Target
+				Name="Test"
+				MenuCaption="&amp;Test"
+				RunFromDir="%rw"
+				CaptureOutputWith="ProcessBuffer"
+				ClearProcessBuffer="1">
+				<Exec CmdLine="rake test"/>
+			</Target>
+		</Menu>
+	</Config>
+	<Files>
+		<Folder
+			Filters=""
+			Name="Other Files">
+			<F N="Rakefile"/>
+			<F N="structs.c"/>
+		</Folder>
+		<Folder
+			Filters="Rakefile"
+			Name="Resource Files"/>
+		<Folder
+			Filters="*.rb"
+			Name="Source Files">
+			<F N="kbd-consts.rb"/>
+			<F N="kbd-input.rb"/>
+			<F N="kbd-structs.rb"/>
+			<F N="keysyms.c"/>
+			<F N="test.rb"/>
+		</Folder>
+		<F N="detect-keycodes.rb"/>
+	</Files>
+</Project>
