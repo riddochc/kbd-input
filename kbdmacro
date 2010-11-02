@@ -4,9 +4,30 @@ require ENV['HOME'] + '/project/kbd-input/kbd-input.rb'
 
 k = Keyboard.new()
 
+def run_command(cmdline)
+  user_input = ""
+  IO.popen(cmdline) do |pipe|
+    user_input = pipe.read(nil)
+  end
+  retval = $?.to_i
+  user_input.strip!
+  return user_input, retval
+end
+
 macros = YAML.load(File.open(ENV['HOME'] + "/.keyboarding.yaml"))
 
-macro = macros[ARGV[0]]
+if ARGV[0].nil?
+  all_macros = macros.keys
+  cmdline = "zenity --list --column=Mode " + all_macros.join(" ")
+  macroname, retval = run_command(cmdline)
+  if retval != 0
+    exit -1
+  end
+  macro = macros[macroname]
+else
+  macro = macros[ARGV[0]]
+end
+
 unless macro.nil?
   str = macro['string']
   unless str.nil?
@@ -15,8 +36,8 @@ unless macro.nil?
   code = macro['code']
   unless code.nil?
     # eval(code)
-    puts "The code is:"
-    puts code
+    # puts "The code is:"
+    # puts code
     eval(code)
   end
 end

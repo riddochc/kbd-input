@@ -22,18 +22,45 @@ class KeyboardMapping
       # If I want to hit a "q", tell it to hit "x" instead.
       # 
       @remap_chars = {
-      "V"=>">", "+"=>"}", "v"=>".", "k"=>"v", "K"=>"V",
-      "W"=>"<", "l"=>"p", "L"=>"P", ","=>"w", "w"=>",", "-"=>"'", "\""=>"Q",
-      "b"=>"n", "B"=>"N", "x"=>"b", "X"=>"B", "y"=>"t", "Y"=>"T", "c"=>"i",
-      "C"=>"I", "."=>"e", "n"=>"l", "N"=>"L", "Z"=>"?", "o"=>"s", "O"=>"S", "d"=>"h",
-      "D"=>"H", "/"=>"[", ":"=>"Z", "z"=>"/", "{"=>"_", "p"=>"r", "P"=>"R",
-      "e"=>"d", "E"=>"D", ";"=>"z", "["=>"-", "f"=>"y", "F"=>"Y",
+      # A and M don't get remapped.
+      "b"=>"n", "B"=>"N",
+      "c"=>"i", "C"=>"I",
+      "d"=>"h", "D"=>"H",
+      "e"=>"d", "E"=>"D",
+      "f"=>"y", "F"=>"Y",
+      "g"=>"u", "G"=>"U",
+      "h"=>"j", "H"=>"J",
+      "i"=>"g", "I"=>"G",
+      "j"=>"c", "J"=>"C",
+      "k"=>"v", "K"=>"V",
+      "l"=>"p", "L"=>"P",
+      "n"=>"l", "N"=>"L",
+      "o"=>"s", "O"=>"S",
+      "p"=>"r", "P"=>"R",
       "q"=>"x", "Q"=>"X",
-      "<"=>"W", "g"=>"u", "G"=>"U", "]"=>"=", "="=>"]", "'"=>"q", "r"=>"o",
-      "R"=>"O", "}"=>"+", "h"=>"j", "H"=>"J", ">"=>"E", "s"=>";", "S"=>":",
-      "i"=>"g", "I"=>"G", "?"=>"{", "_"=>"\"", "t"=>"k", "T"=>"K", "u"=>"f",
-      "U"=>"F", "j"=>"c", "J"=>"C"}
+      "r"=>"o", "R"=>"O",
+      "s"=>";", "S"=>":",
+      "t"=>"k", "T"=>"K",
+      "u"=>"f", "U"=>"F",
+      "v"=>".", "V"=>"<",
+      "w"=>",", "W"=>">",
+      "x"=>"b", "X"=>"B",
+      "y"=>"t", "Y"=>"T",
+      "z"=>"/", "Z"=>"?",
+
+      "'"=>"q", "\""=>"Q",
+      ","=>"w", "<"=>"W",
+      "."=>"e", ">"=>"E",
+      ";"=>"z", ":"=>"Z",
+
+      "["=>"-", "{"=>"_",
+      "]"=>"=", "}"=>"+",
+      "="=>"]", "+"=>"}",
+      "-"=>"'", "_"=>"\"",
+      "/"=>"[", "?"=>"{",
+       }
     end
+    
 
 
     @char_to_evconst = {
@@ -101,8 +128,7 @@ class KeyboardMapping
       c = i
     end
 
-    keydata = @remap_chars[c.chr] || c.chr
-    return keydata
+    return @remap_chars[c.chr] || c.chr
   end
 
   def each_code_in(str)
@@ -218,7 +244,7 @@ class Keyboard
   end
 
   # TODO: Make use of key remapping here?
-  def press_and_release(key, sleep_for = 0)
+  def press_and_release(key, sleep_for = 0.05)
     press(key)
     release(key)
     sleep(sleep_for) unless sleep_for == 0      
@@ -240,7 +266,8 @@ class Keyboard
     @fh.write(i.to_s)
   end
 
-  def type_string(str)
+  def type_string(str, delay=0.1)
+    sleep delay unless delay == 0
     @mapping.each_code_in(str) do |pair|
       code = pair[0]
       mod = pair[1]
@@ -250,15 +277,18 @@ class Keyboard
         press_and_release(code)
       end
     end
+    sleep delay unless delay == 0
   end
 
   def close()
     @fh.close
   end
+
+
 end
 
 
-k = Keyboard.new()
+#k = Keyboard.new()
 
 #k.press_and_release(UInput::KEY::P)
 #sleep 0.5
@@ -271,5 +301,10 @@ k = Keyboard.new()
 
 #str = ("a".."z").inject("") {|a, s| a << s} + ("A".."Z").inject("") {|a, s| a << s}
 #k.type_string(str)
+# k.type_string(s)
+# k.type_string("a")
 
-k.close()
+#k.close()
+
+
+
