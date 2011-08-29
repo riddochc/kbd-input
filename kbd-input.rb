@@ -204,9 +204,9 @@ end
 class Keyboard
   def initialize()
     @mapping = KeyboardMapping.new('dvorak')
-    @fh = File.open('/dev/input/uinput', 'w')
+    @fh = File.open('/dev/uinput', 'w')
     if @fh.nil?
-      puts "Couldn't open /dev/input/uinput!"
+      puts "Couldn't open /dev/uinput!"
       return
     end
 
